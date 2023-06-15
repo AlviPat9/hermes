@@ -1,5 +1,5 @@
 """
-Hermes Base Data
+Teseo Base Data
 ===================
 
 This class is the base class for data processing.
@@ -7,12 +7,10 @@ This class is the base class for data processing.
 Author: Alvaro Marcos Canedo
 """
 
-from hermes.utilities.enums import MissingData, Normalization
-
 
 class BaseData(object):
     """
-    This is the base class for the data treated in Hermes Data Processor.
+    This is the base class for the data treated in the Machine Learning Data Processor.
     :param key: The name of the property, to be used to select the data
     :type key: string
     """
@@ -83,6 +81,7 @@ class CategoricalData(BaseData):
 
         self.categories = list(data.unique())
         self._encoder()
+        self.mode_ = data.mode().values[0]
 
     def _encoder(self):
         """
