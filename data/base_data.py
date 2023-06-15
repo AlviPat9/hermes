@@ -61,6 +61,7 @@ class NumericalData(BaseData):
         self.std_ = data.std(axis=0)
         self.var_ = self.std_ ** 2
         self.median_ = data.median(axis=0)
+        self.quantile25, self.quantile75 = data.quantile([0.25, 0.75])
 
 
 class CategoricalData(BaseData):
