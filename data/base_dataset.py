@@ -12,6 +12,7 @@ from abc import ABC, abstractmethod
 import pandas as pd
 
 from hermes.utilities.enums import DatasetType
+from hermes.model.model import RegModel, ImageModel
 
 
 class BaseDataset(ABC):
@@ -58,7 +59,9 @@ class BaseDataset(ABC):
         """
 
         if dataset_type == DatasetType.REGRESSION:
-            return pd.DataFrame()
+            return RegModel()
+        elif dataset_type == DatasetType.IMAGE_PROCESSOR:
+            return ImageModel()
         else:
             raise NotImplementedError('Dataset Type not implemented at the moment')
 
