@@ -47,6 +47,8 @@ class Normalization(IntEnum):
     L1 = auto()
     L2 = auto()
     ROBUST_SCALER = auto()
+    RANGE_NORM = auto()
+    CHANNEL_WISE = auto()
 
 
 class CategoricalData(IntEnum):
