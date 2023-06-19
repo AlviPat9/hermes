@@ -103,6 +103,11 @@ class ImageModel(object):
         self.path.generator_path = None
         self.path.output_path = None
 
+        # Set Neural network input data
+        self.nn_data.training_gen = None
+        self.nn_data.validation_gen = None
+        self.nn_data.preprocessing_layers = None
+
     def set_path(self, input_path: str):
         """
 
@@ -119,8 +124,23 @@ class ImageModel(object):
         # Set output path and chek if it exists
         setattr(self.path, 'output_path', Path(os.path.join(input_path, 'model')))
 
+        # Check existence of the output path
         if not self.path.output_path.exists():
             Path.mkdir(self.path.output_path)
+
+        # Set training path
+        setattr(self.path, 'training_path', Path(os.path.join(self.path.output_path, 'training')))
+
+        # Check existence of the training path
+        if not self.path.training_path.exists():
+            Path.mkdir(self.path.training_path)
+
+        # Set validation path
+        setattr(self.path, 'validation_path', Path(os.path.join(self.path.output_path, 'validation')))
+
+        # Check existence of the validation path
+        if not self.path.validation_path.exists():
+            Path.mkdir(self.path.validation_path)
 
     def set_model_info(self):
         """
