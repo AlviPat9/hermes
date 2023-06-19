@@ -58,7 +58,7 @@ class ImageProcessor(BaseDataset):
         :param split_size: Proportion of dataset to be used for training. Default -> 1.0 -> All images for training
         :type split_size: float, optional
         :return: None return for this method.
-        :rtype: None
+        :rtype: NoneType
         """
 
         # Set model info for the processor.
@@ -121,7 +121,8 @@ class ImageProcessor(BaseDataset):
         :type color_mode: str
         :param shuffle: Whether to shuffle the data. Default: True
         :type shuffle: boll
-        :return:
+        :return: None return. Creates generators to train the neural network.
+        :rtype: NoneType
         """
 
         # Call preprocessing method image_dataset_from_directory for training generator
@@ -147,8 +148,26 @@ class ImageProcessor(BaseDataset):
 
     def preprocessing_layers_for_nn(self, random_flip: str = None, random_rotation: float = None,
                                     height_shift: tuple = None, width_shift: tuple = None,
-                                    height_zoom: tuple = None, width_zoom: tuple = None):
+                                    height_zoom: tuple = None, width_zoom: tuple = None) -> None:
+        """
 
+        Method to create the preprocessing layers for a computer vision model.
+
+        :param random_flip: Type of flip applied to the database. 'horizontal', 'vertical' or 'horizontal_and_vertical'.
+        :type random_flip: str, optional
+        :param random_rotation: Float which represents a fraction of the interval [-2pi, 2pi].
+        :type random_rotation: float, optional
+        :param height_shift: Factor to translate/shift images vertically.
+        :type height_shift: tuple, optional
+        :param width_shift: Factor to translate/shift images horizontally.
+        :type width_shift: tuple, optional
+        :param height_zoom: Factor to zoom images vertically.
+        :type height_zoom: tuple, optional
+        :param width_zoom: Factor to zoom images horizontally.
+        :type width_zoom: tuple, optional
+        :return: None return. It updates the value of the model.nn_data.preprocessing_layers value.
+        :rtype: NoneType
+        """
         model = tf.keras.Sequential([])
 
         # Add random flip preprocessing layer
@@ -170,7 +189,7 @@ class ImageProcessor(BaseDataset):
         # Copy the preprocessing layers to the attribute of the class
         self.model.nn_data.preprocessing_layers = model
 
-    def _split_data(self, images_path: Path, split_size: float):
+    def _split_data(self, images_path: Path, split_size: float) -> None:
         """
 
         Method to split image data into training and validation directory.
@@ -179,7 +198,8 @@ class ImageProcessor(BaseDataset):
         :type images_path: Path
         :param split_size: Portion of the dataset to be used for training. The rest will be used for the validation.
         :type split_size: float
-        :return:
+        :return: None return. Method to move data from one folder to another and split the data if necessary.
+        :rtype: NoneType
         """
 
         # Get full list of images
