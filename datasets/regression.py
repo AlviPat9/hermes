@@ -34,8 +34,8 @@ class Regression(BaseDataset):
 
         """
         super().__init__(DatasetType.REGRESSION)
-        self._numerical_data = {}
-        self._categorical_data = {}
+        self.__numerical_data = {}
+        self.__categorical_data = {}
 
     def prepare_data(self, input_data: pd.DataFrame, numerical_cols: list = None, categorical_cols: list = None,
                      categorical_type: hermes.utilities.enums.CategoricalData = CategoricalData.ONE_HOT,
@@ -61,25 +61,28 @@ class Regression(BaseDataset):
 
         model = {}
 
+        # Set model info
+        self.model.set_model_info(numerical_cols, categorical_cols, categorical_type, normalization, missing_data)
+
         # Numerical data preparation
         if numerical_cols:
             for i in numerical_cols:
-                self._numerical_data[i] = NumericalData(i, input_data[i])
-                input_data[i] = self._missing_data(input_data[i], self._numerical_data[i], missing_data)
-                model[i] = self._parameter_tuning(input_data[i], self._numerical_data[i], normalization)
+                self.model.__numerical_data[i] = NumericalData(i, input_data[i])
+                input_data[i] = self._missing_data(input_data[i], self.model.__numerical_data[i], missing_data)
+                model[i] = self._parameter_tuning(input_data[i], self.model.__numerical_data[i], normalization)
 
         # Categorical data preparation
         if categorical_cols:
             for i in categorical_cols:
-                self._categorical_data[i] = CategoricalData(i, input_data[i])
+                self.model.__categorical_data[i] = CategoricalData(i, input_data[i])
                 if categorical_type == CategoricalData.DUMMY:
-                    model[i] = self._dummy_encoder(input_data[i], self._categorical_data[i].encoder)
+                    model[i] = self._dummy_encoder(input_data[i], self.model.__categorical_data[i].encoder)
                 elif categorical_type == CategoricalData.ONE_HOT:
-                    model[i] = self._one_hot_encoder(input_data[i], self._categorical_data[i].categories)
+                    model[i] = self._one_hot_encoder(input_data[i], self.model.__categorical_data[i].categories)
 
         # Concatenate all columns in a single DataFrame
         for key, value in model.items():
-            self.model = pd.concat([self.model, value], axis=1)
+            self.model.data = pd.concat([self.model.data, value], axis=1)
 
     def revert_tuning(self, data: pd.Series, col_name: str, normalization: hermes.utilities.enums.Normalization) -> pd.Series:
         """

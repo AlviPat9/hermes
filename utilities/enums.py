@@ -18,6 +18,7 @@ class DatasetType(IntEnum):
     """
     # Numerical and categorical data for regression, classification models, decision trees... are grouped by regression
     REGRESSION = auto()
+    IMAGE_PROCESSOR = auto()
 
 
 class MissingData(IntEnum):
@@ -46,6 +47,8 @@ class Normalization(IntEnum):
     L1 = auto()
     L2 = auto()
     ROBUST_SCALER = auto()
+    RANGE_NORM = auto()
+    CHANNEL_WISE = auto()
 
 
 class CategoricalData(IntEnum):
